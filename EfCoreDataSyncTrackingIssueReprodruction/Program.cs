@@ -85,6 +85,9 @@ namespace EfCoreDataSyncTrackingIssueReprodruction
                 contacts[1].Units.Add(units[1]);
 
                 contacts[1].Responsibilities.Add(unitsToElements[1]);
+                contacts[0].Responsibilities.Add(unitsToElements[3]);
+                contacts[1].Responsibilities.Add(unitsToElements[0]);
+                contacts[1].Responsibilities.Add(unitsToElements[1]);
 
                 context.SaveChanges();
 
@@ -106,6 +109,8 @@ namespace EfCoreDataSyncTrackingIssueReprodruction
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
+
+                context.AddRange(dataContextDto.Contacts.SelectMany(e => e.Responsibilities).Distinct());
 
                 context.Units.AddRange(dataContextDto.Units);
                 context.Contacts.AddRange(dataContextDto.Contacts);
