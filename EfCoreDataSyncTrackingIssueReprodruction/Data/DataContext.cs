@@ -21,8 +21,10 @@ namespace Model.Data
 
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Element> Elements { get; set; }
+        public DbSet<Function> Functions { get; set; }
+        public DbSet<Group> Groups { get; set; }
         public DbSet<Unit> Units { get; set; }
-
+   
         //JOIN-Tables
         public DbSet<UnitToElement> UnitsToElements { get; set; }
 

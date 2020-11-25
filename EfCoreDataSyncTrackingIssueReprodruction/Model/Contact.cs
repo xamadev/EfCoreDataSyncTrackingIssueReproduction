@@ -17,5 +17,6 @@ namespace Model.Entities
         public virtual ICollection<Unit> Units { get; set; } = new List<Unit>();
 
         public virtual ICollection<UnitToElement> Responsibilities { get; set; } = new List<UnitToElement>();
+        public virtual ICollection<Function> Functions { get; set; } = new List<Function>();
     }
 }

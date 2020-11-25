@@ -1,18 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Model.Entities.JoinEntities;
+using Model.Entities;
 using Newtonsoft.Json;
 
 namespace Model.Entities
 {
-    public class Element
+    public class Group
     {
         public int Id { get; set; }
+        [Required]
         public string Desc { get; set; }
 
-        public virtual ICollection<Unit> Units { get; set; } = new List<Unit>();
-        public virtual ICollection<Group> PortfolioGruppen { get; set; } = new List<Group>();
+        public virtual ICollection<Element> Elements { get; set; } = new List<Element>();
 
+        public override string ToString()
+        {
+            return Desc;
+        }
     }
 }

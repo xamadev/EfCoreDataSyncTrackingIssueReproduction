@@ -50,14 +50,30 @@ namespace EfCoreDataSyncTrackingIssueReprodruction
                 var elements = new[]
                 {
                     new Element {Desc = "Desc1"}, new Element {Desc = "Desc2"}, new Element {Desc = "Desc3"},
-                    new Element {Desc = "Desc4"}, new Element {Desc = "Desc5"}, new Element {Desc = "Desc6"},
+                    new Element {Desc = "Desc4"}, new Element {Desc = "Desc5"}, new Element {Desc = "Desc6"}, new Element {Desc = "Desc7"}
                 };
 
                 context.Elements.AddRange(elements);
 
+                var groups = new[]
+                {
+                    new Group {Desc = "G1"}, new Group {Desc = "G2"},
+                    new Group {Desc = "G3"}, new Group {Desc = "G4"}
+                };
+
+                groups[0].Elements.Add(elements[0]);
+                groups[0].Elements.Add(elements[1]);
+                groups[0].Elements.Add(elements[2]);
+                groups[0].Elements.Add(elements[3]);
+                groups[0].Elements.Add(elements[5]);
+                groups[1].Elements.Add(elements[4]);
+                groups[2].Elements.Add(elements[5]);
+
+                context.Groups.AddRange(groups);
+
                 var units = new[]
                 {
-                    new Unit {Desc = "Desc1"}, new Unit {Desc = "Desc2"}, new Unit {Desc = "Desc3"}, new Unit {Desc = "Desc4"}
+                    new Unit {Desc = "Desc1"}, new Unit {Desc = "Desc2"}, new Unit {Desc = "Desc3"}, new Unit {Desc = "Desc4"}, new Unit {Desc = "Desc5"}
                 };
 
                 context.Units.AddRange(units);
@@ -75,6 +91,14 @@ namespace EfCoreDataSyncTrackingIssueReprodruction
 
                 context.UnitsToElements.AddRange(unitsToElements);
 
+                var functions = new[]
+                {
+                    new Function {Desc = "F1"}, new Function {Desc = "F2"}, new Function {Desc = "F3"},
+                    new Function {Desc = "F4"}
+                };
+
+                context.Functions.AddRange(functions);
+
                 var contacts = new Contact[] {new Contact {Id = "1234567",}, new Contact {Id = "2345678"}, new Contact { Id = "3456789" } };
 
                 context.Contacts.AddRange(contacts);
@@ -90,12 +114,16 @@ namespace EfCoreDataSyncTrackingIssueReprodruction
                 contacts[1].Responsibilities.Add(unitsToElements[1]);
                 contacts[2].Responsibilities.Add(unitsToElements[0]);
 
+                contacts[0].Functions.Add(functions[0]);
+                contacts[0].Functions.Add(functions[1]);
+                contacts[1].Functions.Add(functions[1]);
+                contacts[2].Functions.Add(functions[2]);
 
                 context.SaveChanges();
 
                 var data = new DataContextDto()
                 {
-                    Units = context.Units.ToList(), Contacts = context.Contacts.ToList(), Elements = context.Elements.ToList(),
+                    Units = context.Units.ToList(), Contacts = context.Contacts.ToList(), Elements = context.Elements.ToList(), Groups = context.Groups.ToList(), Functions = context.Functions.ToList()
                 };
 
                 json = JsonConvert.SerializeObject(data,
@@ -115,8 +143,10 @@ namespace EfCoreDataSyncTrackingIssueReprodruction
                 context.AddRange(dataContextDto.Contacts.SelectMany(e => e.Responsibilities).Distinct());
 
                 context.Units.AddRange(dataContextDto.Units);
-                context.Contacts.AddRange(dataContextDto.Contacts);
+                context.Functions.AddRange(dataContextDto.Functions);
+                context.Groups.AddRange(dataContextDto.Groups);
                 context.Elements.AddRange(dataContextDto.Elements);
+                context.Contacts.AddRange(dataContextDto.Contacts);
 
                 context.SaveChanges();
             }
