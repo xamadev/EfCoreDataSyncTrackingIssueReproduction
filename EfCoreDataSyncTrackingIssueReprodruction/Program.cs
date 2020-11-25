@@ -75,7 +75,7 @@ namespace EfCoreDataSyncTrackingIssueReprodruction
 
                 context.UnitsToElements.AddRange(unitsToElements);
 
-                var contacts = new Contact[] {new Contact {Id = "1234567",}, new Contact {Id = "2345678"}};
+                var contacts = new Contact[] {new Contact {Id = "1234567",}, new Contact {Id = "2345678"}, new Contact { Id = "3456789" } };
 
                 context.Contacts.AddRange(contacts);
 
@@ -84,10 +84,12 @@ namespace EfCoreDataSyncTrackingIssueReprodruction
                 contacts[1].Units.Add(units[0]);
                 contacts[1].Units.Add(units[1]);
 
-                contacts[1].Responsibilities.Add(unitsToElements[1]);
+                contacts[0].Responsibilities.Add(unitsToElements[0]);
                 contacts[0].Responsibilities.Add(unitsToElements[3]);
                 contacts[1].Responsibilities.Add(unitsToElements[0]);
                 contacts[1].Responsibilities.Add(unitsToElements[1]);
+                contacts[2].Responsibilities.Add(unitsToElements[0]);
+
 
                 context.SaveChanges();
 
